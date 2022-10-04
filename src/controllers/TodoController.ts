@@ -157,7 +157,8 @@ const updateTodoById = (req: Request, res: Response) => {
             if (error) {
                 Logger.error('Was not able to update todo with id: ' + req.params.id + '. Got the following error: ' + error)
                 res.status(StatusCode.BAD_REQUEST).send({
-                    error: 'Was not able to update todo with id: ' + req.params.id + '. Got the following error: ' + error
+                    message: 'Was not able to update todo with id: ' + req.params.id,
+                    body: error
                 })
             } else {
                 if (todo) {
@@ -177,7 +178,8 @@ const updateTodoById = (req: Request, res: Response) => {
     } catch (error) {
         Logger.error('Could not update todo with id: ' + req.params.id + '. Got error:' + error)
         res.status(StatusCode.BAD_REQUEST).send({
-            error: 'Could not update todo with id: ' + req.params.id + '. Got error:' + error
+            message: 'Could not update todo with id: ' + req.params.id,
+            body: error
         })
     }
 }

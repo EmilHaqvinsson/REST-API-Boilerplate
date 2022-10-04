@@ -1,0 +1,251 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2022-10-04T14:26:23.439Z",
+  "__export_source": "insomnia.desktop.app:v2022.6.0",
+  "resources": [
+    {
+      "_id": "req_954e006ee0c4486ca4f58250d3a08515",
+      "parentId": "wrk_a567462cb1fd49139ecc7b33a9acd924",
+      "modified": 1664889717798,
+      "created": 1664888961431,
+      "url": "http://localhost:8090/",
+      "name": "/ (ALIVE)",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1664888961431,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "wrk_a567462cb1fd49139ecc7b33a9acd924",
+      "parentId": null,
+      "modified": 1664783325498,
+      "created": 1664783325498,
+      "name": "Datalagring",
+      "description": "",
+      "scope": "collection",
+      "_type": "workspace"
+    },
+    {
+      "_id": "req_82936478086f4e70bf5a7e70fe97a5f9",
+      "parentId": "wrk_a567462cb1fd49139ecc7b33a9acd924",
+      "modified": 1664892529828,
+      "created": 1664793715536,
+      "url": "http://localhost:8090/todos",
+      "name": "/todos (CREATE)",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"todo\": \"Visa för Lars att backend fungerar som den ska.\",\n\t\"isDone\": \"false\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1664793715536,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_d3a2f6782520437eaf553ea94e06a125",
+      "parentId": "wrk_a567462cb1fd49139ecc7b33a9acd924",
+      "modified": 1664883544948,
+      "created": 1664802356831,
+      "url": "http://localhost:8090/todos",
+      "name": "/todos (GET ALL)",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [
+        {
+          "id": "pair_8e6da261c982489aa94c085d7879b5ca",
+          "name": "id",
+          "value": "633c0d3328fa010956578baf",
+          "description": "",
+          "disabled": true
+        }
+      ],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1664793675219,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_55936b923087411bbc3adc8ed7980ac9",
+      "parentId": "wrk_a567462cb1fd49139ecc7b33a9acd924",
+      "modified": 1664886000228,
+      "created": 1664885721806,
+      "url": "http://localhost:8090/todos/undone",
+      "name": "/todos/undone (GET UNDONE)",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [
+        {
+          "id": "pair_8e6da261c982489aa94c085d7879b5ca",
+          "name": "id",
+          "value": "633c0d3328fa010956578baf",
+          "description": "",
+          "disabled": true
+        }
+      ],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1664793655060.5,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_bf6739f3cf834aed9a8bf49f724e8f19",
+      "parentId": "wrk_a567462cb1fd49139ecc7b33a9acd924",
+      "modified": 1664889170773,
+      "created": 1664802116984,
+      "url": "http://localhost:8090/todos/[INSERT_AN_ID]",
+      "name": "/todos/:id (READ)",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [
+        {
+          "id": "pair_6218b24aa57141bd808d215362e55d87",
+          "name": "id",
+          "value": "633c0d3328fa010956578baf",
+          "description": "",
+          "disabled": true
+        }
+      ],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1664793634902,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_06eb4019be074fe18f60deb02debe40d",
+      "parentId": "wrk_a567462cb1fd49139ecc7b33a9acd924",
+      "modified": 1664892557689,
+      "created": 1664802197006,
+      "url": "http://localhost:8090/todos/[INSERT_AN_ID]",
+      "name": "/todos/:id (UPDATE)",
+      "description": "",
+      "method": "PUT",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"isDone\": \"true\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1664793594585,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "req_be165f3eb5ec4b9496709dbf5095f825",
+      "parentId": "wrk_a567462cb1fd49139ecc7b33a9acd924",
+      "modified": 1664889343904,
+      "created": 1664802325057,
+      "url": "http://localhost:8090/todos/[INSERT_AN_ID]",
+      "name": "/todos/:id (DELETE)",
+      "description": "",
+      "method": "DELETE",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1664793574426.5,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "env_33f10383bd518962d5ccc0e904dd0f202acdf389",
+      "parentId": "wrk_a567462cb1fd49139ecc7b33a9acd924",
+      "modified": 1664892135458,
+      "created": 1664783325504,
+      "name": "Base Environment",
+      "data": {},
+      "dataPropertyOrder": {},
+      "color": null,
+      "isPrivate": false,
+      "metaSortKey": 1664783325504,
+      "_type": "environment"
+    },
+    {
+      "_id": "jar_33f10383bd518962d5ccc0e904dd0f202acdf389",
+      "parentId": "wrk_a567462cb1fd49139ecc7b33a9acd924",
+      "modified": 1664783325505,
+      "created": 1664783325505,
+      "name": "Default Jar",
+      "cookies": [],
+      "_type": "cookie_jar"
+    },
+    {
+      "_id": "spc_5fff4419148b45dbaf0faa6bf0700eff",
+      "parentId": "wrk_a567462cb1fd49139ecc7b33a9acd924",
+      "modified": 1664783325499,
+      "created": 1664783325499,
+      "fileName": "Datalagring",
+      "contents": "",
+      "contentType": "yaml",
+      "_type": "api_spec"
+    }
+  ]
+}
