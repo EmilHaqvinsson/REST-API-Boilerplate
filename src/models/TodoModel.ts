@@ -3,7 +3,7 @@ import {model, Schema} from 'mongoose'
 import {CreateTodo, ReadTodo} from '../interface/Todo'
 
 dotenv.config()
-const dbCollection = process.env.MONGODB_COLLECTION_MESSAGE || ''
+const dbCollection = process.env.MONGODB_COLLECTION_TODOS || ''
 
 const TodoSchema = new Schema<CreateTodo>(
     {

@@ -8,8 +8,8 @@ dotenv.config()
 const PORT: number = Number(process.env.SERVER_PORT) || 3001
 const env: string = process.env.NODE_ENV || 'production'
 
-let uri: string = process.env.MONGODB_URL || 'mongodb://localhost'
-
+const uri = process.env.MONGODB_URL || 'mongodb://localhost'
+const dbName = process.env.MONGODB_NAME || 'todo'
 const connectToDatabase = async () => {
 	try {
 		await connect(uri)

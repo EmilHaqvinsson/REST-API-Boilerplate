@@ -167,7 +167,7 @@ const updateTodoById = (req: Request, res: Response) => {
                 if (todo) {
                     Logger.http('Updated todo: ' + todo)
                     res.status(StatusCode.OK).send({
-                        message: 'Todo was updated!',
+                        message: 'Todo was updated! isDone: ' + todo.isDone,
                         body: todo
                     })
                  } else if (todo === null) {
