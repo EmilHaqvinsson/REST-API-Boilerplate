@@ -9,13 +9,16 @@ const TodoSchema = new Schema<CreateTodo>(
     {
         todo: {
             type: String,
-            required: true
+            required: false
         },
         isDone: {
             type: Boolean,
-            required: true
+            required: false
         },
-
+        extraInformation: {
+            type: String,
+            required: false
+        }
     },{
         timestamps: true
 })

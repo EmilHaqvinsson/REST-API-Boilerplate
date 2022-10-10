@@ -9,14 +9,16 @@ const createTodo = async (req: Request, res: Response) => {
         Logger.info('createTodo')
         Logger.info('req.body' + req.body.todo)
         Logger.info('req.isDone' + req.body.isDone)
-        const { todo, isDone } = req.body
-        if (todo && isDone) {
+        const { todo, extraInformation } = req.body
+        if (todo) {
             const newObject: CreateTodo = {
                 todo: todo,
-                isDone: isDone
+                isDone: false,
+                extraInformation: req.body.extraInformation
             }
             const newTodo = new TodoModel(newObject)
             const dbResponse = await newTodo.save()
+            Logger.info(dbResponse)
             Logger.http('New todo registered in the database:' + dbResponse)
             res.status(StatusCode.CREATED).send({
                 message: 'Created new todo in the database.', 
@@ -151,7 +153,8 @@ const updateTodoById = (req: Request, res: Response) => {
         Logger.info(`todo: ${req.body.todo}\nisDone: ${req.body.isDone}`)
         const updatedTodo: CreateTodo = {
             todo: req.body.todo,
-            isDone: req.body.isDone
+            isDone: req.body.isDone,
+            extraInformation: req.body.extraInformation
         }
         TodoModel.findByIdAndUpdate(thisId, updatedTodo,  {new : true }, (error: any, todo: any) => {
             if (error) {

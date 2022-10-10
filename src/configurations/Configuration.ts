@@ -15,7 +15,7 @@ const connectToDatabase = async () => {
 		await connect(uri)
 		Logger.info(`📈 Successfully connected to MongoDB at ${uri} 📈`)
 	} catch (error) {
-		Logger.error('🛑 Error connecting to the database:'.toUpperCase(), error)
+		Logger.error('🛑 Error connecting to the database:'.toUpperCase(), error, ' 🛑')
 		process.exit()
 	}
 }

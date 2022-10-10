@@ -16,7 +16,7 @@ Middleware.errorHandlerAndNotFound(server)
 
 Configuration.connectToPort(server)
 Configuration.connectToDatabase().then(() => {
-    Logger.info('🚀 Portfolio backend is running... 🚀')
+    Logger.info('🚀 TODO backend is running... 🚀')
 })
 
 export default server
