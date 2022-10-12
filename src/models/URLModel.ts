@@ -11,8 +11,8 @@ const URLSchema = new Schema<SaveURL>(
             type: String,
             required: true
         },
-        hasImages: {
-            type: Boolean,
+        images: {
+            type: Array<String>,
             required: false
         },
         isDownloaded: {

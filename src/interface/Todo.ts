@@ -1,7 +1,9 @@
 export interface CreateTodo {
     todo: string,
     isDone: boolean,
-    extraInformation: string
+    extraInformation?: string,
+    isRepeating?: boolean,
+    repeatInterval?: string
 }
 
 export interface ReadTodo {
@@ -9,6 +11,7 @@ export interface ReadTodo {
     todo: string,
     isDone: boolean,
     extraInformation: string,
+    isRepeating: boolean,
     createdAt: Date,
     updatedAt: Date,
 }

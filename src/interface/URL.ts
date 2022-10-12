@@ -1,6 +1,5 @@
 export interface SaveURL {
     URL: string,
-    hasImages: boolean,
     images?: string[],
     isDownloaded: string
 }

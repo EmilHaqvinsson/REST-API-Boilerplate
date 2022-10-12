@@ -3,18 +3,20 @@ import { CreateTodo, ReadTodo } from '../interface/Todo'
 import Logger from '../utils/Logger'
 import StatusCode from '../utils/StatusCode'
 import TodoModel from '../models/TodoModel'
+import axios from 'axios'
+import { Mongoose } from 'mongoose'
 
 const createTodo = async (req: Request, res: Response) => {
     try {
         Logger.info('createTodo')
-        Logger.info('req.body' + req.body.todo)
-        Logger.info('req.isDone' + req.body.isDone)
-        const { todo, extraInformation } = req.body
+        const { todo, extraInformation, isRepeating, repeatInterval } = req.body
         if (todo) {
             const newObject: CreateTodo = {
                 todo: todo,
                 isDone: false,
-                extraInformation: req.body.extraInformation
+                extraInformation: extraInformation,
+                isRepeating: isRepeating,
+                repeatInterval: repeatInterval
             }
             const newTodo = new TodoModel(newObject)
             const dbResponse = await newTodo.save()
@@ -166,6 +168,7 @@ const updateTodoById = (req: Request, res: Response) => {
             } else {
                 if (todo) {
                     Logger.http('Updated todo: ' + todo)
+                    
                     res.status(StatusCode.OK).send({
                         message: 'Todo was updated! isDone: ' + todo.isDone,
                         body: todo
@@ -187,7 +190,39 @@ const updateTodoById = (req: Request, res: Response) => {
     }
 }
 
+const parseUrl = (request: Request, response: Response) => {
+	const timestamp = new Date()
+	const urlToParse = request.body.URL
+	const arrayOfvideoDivs: any[] = []
+	Logger.http('Trying to parse URL: ' + urlToParse)
+	fetch(urlToParse)
+		.then((res) => {
+			Logger.info(`Got status: ${res.status} from ${urlToParse}`)
+			Logger.info(`Creating an array from the response data..`)
+			// res.contents.forEach((element: any) => {
+			// 	if (element.type === 'div' && element.attributes.classList.includes('video-card')) {
+			// 		arrayOfvideoDivs.push(element)
+			// 		console.log(element, 'number: ' + arrayOfvideoDivs.length)
+			// 	}})
+			Logger.info(`Array created, length: ${arrayOfvideoDivs.length}`)
+			const totalTime = timestamp.getTime() - new Date().getTime()
+			response.status(StatusCode.OK).json({
+				statusMessage: 'OK',
+				message: 'URL parsed successfully in ' + totalTime + 'ms',
+				body: arrayOfvideoDivs
+			})
+		})
+		.catch((err) => {
+			Logger.error(`Got error: ${err} from ${urlToParse}`)
+			response.status(StatusCode.INTERNAL_SERVER_ERROR).json({
+				message: 'URL parsing failed',
+				body: err
+			})
+		})
+}
+
 export default {
+    parseUrl,
     createTodo,
     getAllTodos,
     getUndoneTodos,

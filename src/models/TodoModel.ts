@@ -18,7 +18,17 @@ const TodoSchema = new Schema<CreateTodo>(
         extraInformation: {
             type: String,
             required: false
+        },
+        isRepeating: {
+            type: Boolean,
+            required: false
+        },
+        repeatInterval: {
+            type: String,
+            required: false,
+            possibleValues: ['daily', 'weekly', 'monthly', 'yearly']
         }
+
     },{
         timestamps: true
 })
