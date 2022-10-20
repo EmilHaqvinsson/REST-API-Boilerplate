@@ -7,6 +7,8 @@ import { JSDOM } from 'jsdom'
 import { existsSync, mkdirSync } from 'fs';
 import { readFile, writeFile } from 'fs/promises';
 import { resolve } from 'path';
+import Tesseract from 'tesseract.js'
+import fs from 'fs'
 
 const parseUrl = (request: Request, response: Response) => {
 
@@ -89,7 +91,7 @@ const parseUrl = (request: Request, response: Response) => {
 				true,
 			);
 			const data = extractData(document);
-			const dataToSend = {'hacker-news-links': data}
+			const dataToSend = { 'hacker-news-links': data }
 			return dataToSend
 		}
 
@@ -103,6 +105,70 @@ const parseUrl = (request: Request, response: Response) => {
 	}
 }
 
+const ocr = (request: Request, response: Response) => {
+	const image = request.body.image
+	// const image = `https://tile.loc.gov/image-services/iiif/service:gdc:gdcscd:00:51:61:14:69:1:00516114691:0005/full/pct:100/0/default.jpg`
+	// const image = `https://tile.loc.gov/image-services/iiif/public:gdcmassbookdig:motors00zerb:motors00zerb_0083/full/pct:100.0/0/default.jpg`
+	try {
+		const started = Date.now();
+		Tesseract.recognize(image, 'eng', { logger: m => console.log(m) })
+			.then(({ data: { text } }) => {
+				const ended = Date.now();
+				const time = ended - started;
+				console.log(text)
+				response.status(StatusCode.OK).json({
+					message: 'OCR successful',
+					data: text,
+					time: time
+				}
+				)
+			})
+	} catch (error) {
+		Logger.error(error)
+		response.status(StatusCode.INTERNAL_SERVER_ERROR).send(error)
+	}
+}
+
+function padStart(number: number, targetLength: number, padString: string) {
+	let output = `${number}`;
+	while (output.length < targetLength) {
+		output = padString + output;
+	}
+	
+	console.log(output)
+	return Number(output);
+}
+
+const downloadImage = (req: Request, res: Response) => {
+	const url = req.body.url
+	const startingPage: number = req.body.startingPage
+	const endingPage: number = req.body.endingPage
+
+	const fixedStart = padStart(startingPage, 4, '0')
+	const fixedEnd = padStart(endingPage, 4, '0')
+
+	console.log(url + 'from page: ', fixedStart + 'to page: ', fixedEnd)
+	try {
+		const imageArray: string[] = []
+		for (let i = fixedStart; i <= fixedEnd; i++) {
+			const image = `${url}${i}/full/pct:100/0/default.jpg`
+			imageArray.push(image)
+		}
+
+		console.log(imageArray)
+		res.status(StatusCode.OK).json({
+			message: 'Image download successful',
+			data: imageArray,
+		}
+		)
+	} catch (error) {
+		Logger.error(error)
+		res.status(StatusCode.INTERNAL_SERVER_ERROR).send(error)
+	}
+}
+
 export default {
-	parseUrl
+	parseUrl,
+	ocr,
+	downloadImage
 }
