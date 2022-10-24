@@ -1,5 +1,6 @@
 import { CreateNote } from "../interface/Note";
 import { Request, Response } from "express";
+
 import jwt from "jsonwebtoken";
 import Logger from "../utils/Logger";
 import NoteModel from "../models/NoteModel";
@@ -8,13 +9,14 @@ import StatusCode from "../utils/StatusCode";
 const addNote = async (req: Request, res: Response) => {
     try {
         Logger.info('addNote')
-        const { title, content, author, isPrivate } = req.body;
+        const { title, content, author, isPrivate, tags } = req.body;
         if (content !== undefined) {
             const newObject: CreateNote = {
                 title: title,
                 content: content,
                 author: author,
-                isPrivate: isPrivate
+                isPrivate: isPrivate,
+                tags: tags
             }
             Logger.info(newObject)
             const newNote = new NoteModel(newObject)
@@ -38,6 +40,37 @@ const addNote = async (req: Request, res: Response) => {
         })
     }
 }
+
+const getListOfTags = async (req: Request, res: Response) => {
+    const allTags: string[] = []
+    try {
+        Logger.info('getListOfTags')
+        const dbResponse = await NoteModel.find({}, 'tags')
+        dbResponse.forEach((note: any) => {
+            note.tags.forEach((tag: any) => {
+                if (allTags.includes(tag) === false) {
+                    allTags.push(tag)
+                }
+            })
+        })
+        Logger.info(allTags)
+        if (allTags.length === 0) {
+            Logger.warn('No tags found in the database')
+            res.status(StatusCode.OK).send({
+                message: 'There are currently no tags in the database.'
+            });
+        } else {
+            Logger.http('Array of all unique tags in the database: ' + allTags);
+            res.status(StatusCode.OK).send(allTags);
+        }
+    } catch (error) {
+        Logger.error('Could not get list of tags: ' + error)
+        res.status(StatusCode.INTERNAL_SERVER_ERROR).send({
+            error: 'Something went wrong when trying to get list of tags.'
+        })
+    }
+}
+
 
 const getAllNotes = async (req: Request, res: Response) => {
     Logger.info('Getting all notes in the database...')
@@ -148,8 +181,11 @@ const getNoteById = async (req: Request, res: Response) => {
     }
 }
 
+//TODO: Add "filter by tag" functionality
+
 export default {
     addNote,
     getAllNotes,
-    getNoteById
+    getNoteById,
+    getListOfTags
 }

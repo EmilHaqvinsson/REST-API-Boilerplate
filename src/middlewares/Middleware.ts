@@ -4,6 +4,8 @@ import express from 'express'
 import helmet from 'helmet'
 import StatusCode from '../utils/StatusCode'
 import MorganMiddleware from './MorganMiddleware'
+import passport from 'passport'
+import { Strategy, ExtractJwt, StrategyOptions } from 'passport-jwt'
 
 dotenv.config()
 const env = process.env.NODE_ENV || 'production'
@@ -17,12 +19,35 @@ const options: cors.CorsOptions = {
 	methods: allowedMethods
 }
 
+const jwtOptions: StrategyOptions = {
+	jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+	secretOrKey: process.env.TOKEN_SECRET || 'secretToken'
+}
+
+// const jwtStrategy = new Strategy(jwtOptions, (payload, next) => {
+// 	console.log('payload:', payload)
+// 	next(null, payload)
+// })
+
+// const passportMiddleware = (passport: any) => {
+// 	passport.initialize()
+// 	passport.use('jwt', jwtStrategy)
+// }
+
 const applyMiddlewares = (app: express.Application) => {
 	app.use(cors(options))
 	app.use(helmet())
 	app.use(MorganMiddleware)
 	app.use(express.json())
 	app.use(express.urlencoded({ extended: false }))
+	app.use(passport.initialize())
+	// app.use(passport.session())
+
+	passport.authenticate('jwt', { session: false })
+	passport.use(new Strategy(jwtOptions, (payload, next) => {
+		console.log('payload:', payload)
+		next(null, payload)
+	}))
 }
 
 // Own made middlewares

@@ -23,6 +23,10 @@ const NoteSchema = new Schema<CreateNote>(
             type: Boolean,
             required: false
         },
+        tags: {
+            type: Array<String>(),
+            required: false
+        }
     }, {
     timestamps: true
 })

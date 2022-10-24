@@ -1,6 +1,7 @@
 import Logger from "../utils/Logger";
 import StatusCode from "../utils/StatusCode";
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
+import passport from "passport";
 
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -42,8 +43,8 @@ const register = async (req: Request, res: Response) => {
 
 const login = async (req: Request, res: Response) => {
     try {
-        const { username, password } = req.body;
-        console.log(username, password);
+        const { username, password, rememberMe } = req.body;
+        console.log(username, password, 'rememberMe?', rememberMe);
         if (username && password) {
             const user = await UserModel.findOne({ username: username });
             if (user) {
@@ -51,7 +52,8 @@ const login = async (req: Request, res: Response) => {
                 if (validPassword) {
                     const token = jwt.sign(
                         { _id: user._id, username: user.username },
-                        process.env.TOKEN_SECRET || "secretToken"
+                        process.env.TOKEN_SECRET || "secretToken",
+                        { expiresIn: rememberMe ? "7d" : "1d" }
                     );
                     user.token = token;
                     await user.save();
@@ -89,9 +91,30 @@ const getAllUsers = async (req: Request, res: Response) => {
     }
 }
 
+// const getUserByUsername = async (req: Request, res: Response, next: NextFunction) => {
+//     Logger.info("Get user by username:");
+//     try {
+//         const { username } = req.params;
+//         if (username) {
+//             const user = await UserModel.findOne({ username: username });
+//             if (user) {
+//                 res.status(StatusCode.OK).send(user);
+//             }
+//         } else {
+//             res.status(StatusCode.BAD_REQUEST).send("Username is missing");
+//         }
+//     } catch (error) {
+//         Logger.error("Could not get user: " + error);
+//         res.status(StatusCode.INTERNAL_SERVER_ERROR).send({
+//             error: "Something went wrong when trying to get user by username.",
+//         });
+//     }
+// }
+
 const getUserByUsername = async (req: Request, res: Response) => {
-    if (req.headers["auth-token"]) {
-        jwt.verify(req.headers["auth-token"] as string, process.env.TOKEN_SECRET || "secretToken", async (err, decoded) => {
+    if (req.headers.authorization?.startsWith("Bearer ")) {
+        const authUser = req.headers.authorization.split(" ")[1];
+        jwt.verify(authUser as string, process.env.TOKEN_SECRET || "secretToken", async (err, decoded) => {
             if (err) {
                 res.status(StatusCode.UNAUTHORIZED).send("Invalid token");
             } else {

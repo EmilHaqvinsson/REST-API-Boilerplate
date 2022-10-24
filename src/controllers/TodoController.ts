@@ -9,21 +9,22 @@ import { Mongoose } from 'mongoose'
 const createTodo = async (req: Request, res: Response) => {
     try {
         Logger.info('createTodo')
-        const { todo, extraInformation, isRepeating, repeatInterval } = req.body
+        const { todo, extraInformation, isRepeating, repeatInterval, tags } = req.body
         if (todo) {
             const newObject: CreateTodo = {
                 todo: todo,
                 isDone: false,
                 extraInformation: extraInformation,
                 isRepeating: isRepeating,
-                repeatInterval: repeatInterval
+                repeatInterval: repeatInterval,
+                tags: tags
             }
             const newTodo = new TodoModel(newObject)
             const dbResponse = await newTodo.save()
             Logger.info(dbResponse)
             Logger.http('New todo registered in the database:' + dbResponse)
             res.status(StatusCode.CREATED).send({
-                message: 'Created new todo in the database.', 
+                message: 'Created new todo in the database.',
                 body: dbResponse
             })
         } else {
@@ -97,7 +98,7 @@ function getUndoneTodos(req: Request, res: Response) {
 }
 
 const getTodoById = (req: Request, res: Response) => {
-    
+
     Logger.http('Getting todo by id, with id: ' + req.params.id)
     try {
         TodoModel.findById(req.params.id, '', (error: ErrorCallback, todoByID: ReadTodo) => {
@@ -128,7 +129,7 @@ const deleteTodoById = (req: Request, res: Response) => {
             if (error) {
                 Logger.error('Could not delete todo with id \"' + req.params.id + '\"! Got the following error:\n' + error)
                 res.status(StatusCode.BAD_REQUEST).send({
-                    error: `Could not delete todo with id: ${req.params.id}` 
+                    error: `Could not delete todo with id: ${req.params.id}`
                 })
             } else {
                 Logger.http('todo' + todo)
@@ -150,7 +151,7 @@ const deleteTodoById = (req: Request, res: Response) => {
 const updateTodoById = (req: Request, res: Response) => {
     try {
         const thisId = req.params.id
-        Logger.debug('Trying to update todo with id: '+ req.params.id)
+        Logger.debug('Trying to update todo with id: ' + req.params.id)
         Logger.info('Trying to update the following information:')
         Logger.info(`todo: ${req.body.todo}\nisDone: ${req.body.isDone}`)
         const updatedTodo: CreateTodo = {
@@ -158,7 +159,7 @@ const updateTodoById = (req: Request, res: Response) => {
             isDone: req.body.isDone,
             extraInformation: req.body.extraInformation
         }
-        TodoModel.findByIdAndUpdate(thisId, updatedTodo,  {new : true }, (error: any, todo: any) => {
+        TodoModel.findByIdAndUpdate(thisId, updatedTodo, { new: true }, (error: any, todo: any) => {
             if (error) {
                 Logger.error('Was not able to update todo with id: ' + req.params.id + '. Got the following error: ' + error)
                 res.status(StatusCode.BAD_REQUEST).send({
@@ -168,17 +169,17 @@ const updateTodoById = (req: Request, res: Response) => {
             } else {
                 if (todo) {
                     Logger.http('Updated todo: ' + todo)
-                    
+
                     res.status(StatusCode.OK).send({
                         message: 'Todo was updated! isDone: ' + todo.isDone,
                         body: todo
                     })
-                 } else if (todo === null) {
-                        Logger.http('Could not update todo with id: ' + req.params.id + '. There is no todo with that id.')
-                        res.status(StatusCode.NOT_FOUND).send({
-                            message: `Could not find a todo with id: \"${req.params.id}\". Make sure you have the correct id.`
-                        })
-                    }
+                } else if (todo === null) {
+                    Logger.http('Could not update todo with id: ' + req.params.id + '. There is no todo with that id.')
+                    res.status(StatusCode.NOT_FOUND).send({
+                        message: `Could not find a todo with id: \"${req.params.id}\". Make sure you have the correct id.`
+                    })
+                }
             }
         })
     } catch (error) {
@@ -191,34 +192,34 @@ const updateTodoById = (req: Request, res: Response) => {
 }
 
 const parseUrl = (request: Request, response: Response) => {
-	const timestamp = new Date()
-	const urlToParse = request.body.URL
-	const arrayOfvideoDivs: any[] = []
-	Logger.http('Trying to parse URL: ' + urlToParse)
-	fetch(urlToParse)
-		.then((res) => {
-			Logger.info(`Got status: ${res.status} from ${urlToParse}`)
-			Logger.info(`Creating an array from the response data..`)
-			// res.contents.forEach((element: any) => {
-			// 	if (element.type === 'div' && element.attributes.classList.includes('video-card')) {
-			// 		arrayOfvideoDivs.push(element)
-			// 		console.log(element, 'number: ' + arrayOfvideoDivs.length)
-			// 	}})
-			Logger.info(`Array created, length: ${arrayOfvideoDivs.length}`)
-			const totalTime = timestamp.getTime() - new Date().getTime()
-			response.status(StatusCode.OK).json({
-				statusMessage: 'OK',
-				message: 'URL parsed successfully in ' + totalTime + 'ms',
-				body: arrayOfvideoDivs
-			})
-		})
-		.catch((err) => {
-			Logger.error(`Got error: ${err} from ${urlToParse}`)
-			response.status(StatusCode.INTERNAL_SERVER_ERROR).json({
-				message: 'URL parsing failed',
-				body: err
-			})
-		})
+    const timestamp = new Date()
+    const urlToParse = request.body.URL
+    const arrayOfvideoDivs: any[] = []
+    Logger.http('Trying to parse URL: ' + urlToParse)
+    fetch(urlToParse)
+        .then((res) => {
+            Logger.info(`Got status: ${res.status} from ${urlToParse}`)
+            Logger.info(`Creating an array from the response data..`)
+            // res.contents.forEach((element: any) => {
+            // 	if (element.type === 'div' && element.attributes.classList.includes('video-card')) {
+            // 		arrayOfvideoDivs.push(element)
+            // 		console.log(element, 'number: ' + arrayOfvideoDivs.length)
+            // 	}})
+            Logger.info(`Array created, length: ${arrayOfvideoDivs.length}`)
+            const totalTime = timestamp.getTime() - new Date().getTime()
+            response.status(StatusCode.OK).json({
+                statusMessage: 'OK',
+                message: 'URL parsed successfully in ' + totalTime + 'ms',
+                body: arrayOfvideoDivs
+            })
+        })
+        .catch((err) => {
+            Logger.error(`Got error: ${err} from ${urlToParse}`)
+            response.status(StatusCode.INTERNAL_SERVER_ERROR).json({
+                message: 'URL parsing failed',
+                body: err
+            })
+        })
 }
 
 export default {

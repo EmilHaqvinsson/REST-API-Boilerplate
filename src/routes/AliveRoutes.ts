@@ -2,6 +2,8 @@ import { Express } from 'express'
 import AliveController from '../controllers/AliveController'
 import NoteController from '../controllers/NoteController'
 import UserController from '../controllers/UserController'
+import passport from 'passport'
+import passportMiddleware from '../middlewares/Middleware'
 // import URLController from '../controllers/URLController'
 
 const AliveRoutes = (server: Express) => {
@@ -17,6 +19,7 @@ const UserRoutes = (server: Express) => {
 
 const NoteRoutes = (server: Express) => {
     server.get('/notes', NoteController.getAllNotes)
+    server.get('/notes/tags', NoteController.getListOfTags)
     server.post('/note', NoteController.addNote)
     server.get('/note/:id', NoteController.getNoteById)
     // server.put('/note/:id', NoteController.updateNoteById)

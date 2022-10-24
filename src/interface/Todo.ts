@@ -3,7 +3,8 @@ export interface CreateTodo {
     isDone: boolean,
     extraInformation?: string,
     isRepeating?: boolean,
-    repeatInterval?: string
+    repeatInterval?: string,
+    tags?: string[]
 }
 
 export interface ReadTodo {
@@ -12,6 +13,8 @@ export interface ReadTodo {
     isDone: boolean,
     extraInformation: string,
     isRepeating: boolean,
+    repeatInterval: string,
+    tags: string[],
     createdAt: Date,
     updatedAt: Date,
 }
